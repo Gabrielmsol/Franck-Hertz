@@ -82,37 +82,39 @@ def graph_of_wn_peaks(data_array, name_data, title, dh, a, b):
     plt.show()
 
 # Essa função é para teste, te permite ver o grafico conjunto não alterado
-def graph_w_peaks(data_array, list_data, labels, title, dh):
+def graph_w_peaks(data_array, list_data, labels, title, dh, weight):
     fig, ax = plt.subplots()
     ax.set_title(title)
-    ax.set_xlabel('Tensão de aceleração /2')
-    ax.set_ylabel('Corrente')
+    ax.set_xlabel('Tensão de aceleração /2 em V')
+    ax.set_ylabel('Corrente em nA')
 
     for i in range(len(list_data)):
         data = list_data[i]
         lab = labels[i]
+        w = weight[i]
         x = data_array[data][:, 0]
         y = data_array[data][:, 1]
         peaks = find_peaks(y, dh)
         px = data_array[data][peaks, 0]
         py = data_array[data][peaks, 1]
 
-        ax.plot(x, y, label=lab)
-        ax.scatter(px, py)
+        ax.plot(x, y*w, label=lab)
+        ax.scatter(px, py*w)
 
     plt.legend()
     plt.show()
 
 # Essa função da o conjunto dos graficos 
-def graph_wn_peaks(data_array, list_data, labels, title, dh, lowerbound, uperbound):
+def graph_wn_peaks(data_array, list_data, labels, title, dh, weight, lowerbound, uperbound):
     fig, ax = plt.subplots()
     ax.set_title(title)
-    ax.set_xlabel('Tensão de aceleração /2')
-    ax.set_ylabel('Corrente')
+    ax.set_xlabel('Tensão de aceleração /2 em V')
+    ax.set_ylabel('Corrente em nA')
     
     for i in range(len(list_data)):
         data = list_data[i]
         lab = labels[i]
+        w = weight[i]
         a = lowerbound[i]
         b = uperbound[i]
 
@@ -126,7 +128,7 @@ def graph_wn_peaks(data_array, list_data, labels, title, dh, lowerbound, uperbou
         x = np.delete(x, d)
         y = np.delete(y, d)
         
-        ax.plot(x, y, label=lab)
+        ax.plot(x, y*w, label=lab)
 
     plt.legend()
     plt.show()
@@ -142,6 +144,7 @@ labels1 = [
         ]
 lowerbound1 = [0]
 uperbound1 = [6]
+weight1 = [10]
 
 procedimento2 = [
    'Procedimento-2-159C-10nA', 
@@ -152,16 +155,16 @@ procedimento2 = [
    'Procedimento-2-205C-1nA-2'
    ]
 labels2 = [
-    'Procedimento 2 a 159C, 10nA',
-    'Procedimento 2 a 171C, 10nA',
-    'Procedimento 2 a 181C, 10nA',
-    'Procedimento 2 a 184C, 1nA',
-    'Procedimento 2 a 194C, 1nA',
-    'Procedimento 2 a 205C, 1nA'
+    'Procedimento 2 a 159C',
+    'Procedimento 2 a 171C',
+    'Procedimento 2 a 181C',
+    'Procedimento 2 a 184C',
+    'Procedimento 2 a 194C',
+    'Procedimento 2 a 205C'
     ]
 lowerbound2 = [ 0, 0.1, 0.6, 0, 0, 0]
 uperbound2 = [6.9, 7.1, 7.8, 7.1, 7.5, 11.5]
-
+weight2 = [10, 10, 10, 1, 1, 1]
 
 procedimento3 = [
     'Procedimento-3.3-175,5C-10nA-0V',
@@ -174,32 +177,33 @@ procedimento3 = [
     'Procedimento-3.3-175,5C-10nA-3V'
     ]
 labels3 = [
-    'Procedimento 3 a 175.5C, 10nA, 0.0V',
-    'Procedimento 3 a 175.0C, 10nA, 0.1V',
-    'Procedimento 3 a 175.5C, 10nA, 0.5V',
-    'Procedimento 3 a 175.5C, 10nA, 1.0V',
-    'Procedimento 3 a 175.5C, 10nA, 1.5V',
-    'Procedimento 3 a 175.5C, 10nA, 2.0V',
-    'Procedimento 3 a 175.5C, 10nA, 2.5V',
-    'Procedimento 3 a 175.5C, 10nA, 3.0V'
+    'Procedimento 3 a 175.5C, 0.0V',
+    'Procedimento 3 a 175.0C, 0.1V',
+    'Procedimento 3 a 175.5C, 0.5V',
+    'Procedimento 3 a 175.5C, 1.0V',
+    'Procedimento 3 a 175.5C, 1.5V',
+    'Procedimento 3 a 175.5C, 2.0V',
+    'Procedimento 3 a 175.5C, 2.5V',
+    'Procedimento 3 a 175.5C, 3.0V'
     ]
 lowerbound3 = [0, 0, 0, 0, 0, 0, 0, 0]
 uperbound3 = [11.9, 10.5, 11.9, 11.6, 10.5, 10.5, 11.6, 10.8]    
-
+weight3 = [10, 10, 10, 10, 10, 10, 10 ,10]
 
 
 data_array = data_arrays
-procedimento = procedimento2
-labels = labels2
-titulo = 'Procedimento 2'
+procedimento = procedimento3
+labels = labels3
+titulo = 'Procedimento 3'
 dh = 0.05
-lowerbound = lowerbound2
-uperbound = uperbound2
+weight = weight3
+lowerbound = lowerbound3
+uperbound = uperbound3
 
 
 
-graph_w_peaks(data_array, procedimento, labels, titulo , dh)
-graph_wn_peaks(data_array, procedimento, labels, titulo, dh, lowerbound, uperbound)
+graph_w_peaks(data_array, procedimento, labels, titulo , dh, weight)
+graph_wn_peaks(data_array, procedimento, labels, titulo, dh, weight, lowerbound, uperbound)
 #graph_of_w_peaks(data_arrays , procedimento, titulo, dh)
 #graph_of_wn_peaks(data_arrays, procedimento, titulo, dh, a, b)
 
